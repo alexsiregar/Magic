@@ -127,10 +127,10 @@ KEYWORDS = [
     'and',
     'or',
     'not',
-    'IF',
-    'THEN',
-    'ELIF',
-    'ELSE'
+    'if',
+    'then',
+    'eif',
+    'else'
 ]
 
 
@@ -420,7 +420,7 @@ class Parser:
         cases = []
         else_case = None
 
-        if not self.current_tok.matches(TT_KEYWORD, 'IF'):
+        if not self.current_tok.matches(TT_KEYWORD, 'if'):
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 f"Expected 'IF'"
@@ -432,10 +432,10 @@ class Parser:
         condition = res.register(self.expr())
         if res.error: return res
 
-        if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+        if not self.current_tok.matches(TT_KEYWORD, 'then'):
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                f"Expected 'THEN'"
+                f"Expected 'then'"
             ))
 
         res.register_advancement()
@@ -445,17 +445,17 @@ class Parser:
         if res.error: return res
         cases.append((condition, expr))
 
-        while self.current_tok.matches(TT_KEYWORD, 'ELIF'):
+        while self.current_tok.matches(TT_KEYWORD, 'eif'):
             res.register_advancement()
             self.advance()
 
             condition = res.register(self.expr())
             if res.error: return res
 
-            if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+            if not self.current_tok.matches(TT_KEYWORD, 'then'):
                 return res.failure(InvalidSyntaxError(
                     self.current_tok.pos_start, self.current_tok.pos_end,
-                    f"Expected 'THEN'"
+                    f"Expected 'then'"
                 ))
 
             res.register_advancement()
@@ -465,7 +465,7 @@ class Parser:
             if res.error: return res
             cases.append((condition, expr))
 
-        if self.current_tok.matches(TT_KEYWORD, 'ELSE'):
+        if self.current_tok.matches(TT_KEYWORD, 'else'):
             res.register_advancement()
             self.advance()
 
@@ -503,7 +503,7 @@ class Parser:
                     "Expected ')'"
                 ))
 
-        elif tok.matches(TT_KEYWORD, 'IF'):
+        elif tok.matches(TT_KEYWORD, 'if'):
             if_expr = res.register(self.if_expr())
             if res.error: return res
             return res.success(if_expr)
