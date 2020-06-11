@@ -151,7 +151,7 @@ KEYWORDS = [
     'END',
     'return',
     'continue',
-    'BREAK',
+    'break',
 ]
 
 
@@ -670,7 +670,7 @@ class Parser:
             self.advance()
             return res.success(ContinueNode(pos_start, self.current_tok.pos_start.copy()))
 
-        if self.current_tok.matches(TT_KEYWORD, 'BREAK'):
+        if self.current_tok.matches(TT_KEYWORD, 'break'):
             res.register_advancement()
             self.advance()
             return res.success(BreakNode(pos_start, self.current_tok.pos_start.copy()))
@@ -679,7 +679,7 @@ class Parser:
         if res.error:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Expected 'return', 'continue', 'BREAK', 'vr', 'if', 'for', 'while', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'not'"
+                "Expected 'return', 'continue', 'break', 'vr', 'if', 'for', 'while', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'not'"
             ))
         return res.success(expr)
 
