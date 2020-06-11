@@ -150,7 +150,7 @@ KEYWORDS = [
     'then',
     'END',
     'return',
-    'CONTINUE',
+    'continue',
     'BREAK',
 ]
 
@@ -665,7 +665,7 @@ class Parser:
                 self.reverse(res.to_reverse_count)
             return res.success(ReturnNode(expr, pos_start, self.current_tok.pos_start.copy()))
 
-        if self.current_tok.matches(TT_KEYWORD, 'CONTINUE'):
+        if self.current_tok.matches(TT_KEYWORD, 'continue'):
             res.register_advancement()
             self.advance()
             return res.success(ContinueNode(pos_start, self.current_tok.pos_start.copy()))
@@ -679,7 +679,7 @@ class Parser:
         if res.error:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Expected 'return', 'CONTINUE', 'BREAK', 'vr', 'if', 'for', 'while', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'not'"
+                "Expected 'return', 'continue', 'BREAK', 'vr', 'if', 'for', 'while', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'not'"
             ))
         return res.success(expr)
 
